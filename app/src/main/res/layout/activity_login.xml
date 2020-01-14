@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    tools:context=".Login"
+    android:background="@color/background">
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/logo"
+                android:layout_width="240dp"
+                android:layout_height="120dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:padding="4dp"
+                android:src="@drawable/algofocuslogo" />
+
+
+            <EditText
+                android:id="@+id/username"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@android:color/transparent"
+                android:drawableLeft="@drawable/user"
+                android:drawablePadding="12dp"
+                android:ems="10"
+                android:hint="username"
+                android:inputType="textPersonName"
+                android:maxLines="1"
+                android:padding="8dp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"></View>
+
+            <EditText
+                android:id="@+id/password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:background="@android:color/transparent"
+                android:drawableLeft="@drawable/lock"
+                android:drawablePadding="12dp"
+                android:ems="10"
+                android:hint="Password"
+                android:inputType="textPassword"
+                android:maxLines="1"
+                android:padding="8dp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"></View>
+
+            <CheckBox
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/remember_me_checkbox"
+                android:layout_marginTop="6dp"
+                android:padding="8dp"
+                android:onClick="onCheckBoxClicked"
+                android:text="Remember me" />
+
+            <Button
+                android:id="@+id/buttonlogin"
+                style="@style/ebutton_style"
+                android:text="LOGIN" />
+
+            <Button
+                android:id="@+id/buttonsignup"
+                style="@style/ebutton_style"
+                android:text="Sign up"
+                />
+
+            <TextView
+                android:id="@+id/forget_password_textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="240dp"
+                android:layout_marginTop="6dp"
+                android:text="Forget Password?"
+                android:clickable="true"
+                android:textColor="@android:color/background_dark" />
+
+
+
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>
