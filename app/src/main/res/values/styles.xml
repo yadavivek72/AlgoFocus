@@ -9,13 +9,13 @@
     </style>
 
     <style name="ebutton_style">
-        <item name="android:background">@drawable/ex_button</item>
+        <item name="background">@drawable/ex_button</item>
         <item name="android:layout_margin">5dp</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">#FDFDFE</item>
         <item name="android:textSize">18sp</item>
-        <item name="android:textAllCaps">false</item>
+        <item name="textAllCaps">false</item>
 
     </style>
 
