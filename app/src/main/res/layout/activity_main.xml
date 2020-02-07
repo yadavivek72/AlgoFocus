@@ -5,7 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity"
-    android:background="@drawable/algofocuslogo">
+    android:background="@color/background">
+
+    <ImageView
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:src="@drawable/algofocuslogo"></ImageView>
 
 
 </RelativeLayout>

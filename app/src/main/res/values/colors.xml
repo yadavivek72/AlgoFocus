@@ -6,4 +6,6 @@
     <color name="background">#FFFFFF</color>
     <color name="startblue">#09c6df</color>
     <color name="endblue">#0bccef</color>
+    <color name="googlered">#F44336</color>
+
 </resources>

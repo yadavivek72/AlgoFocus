@@ -77,26 +77,58 @@
                 android:onClick="onCheckBoxClicked"
                 android:text="Remember me" />
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="60dp"
+                android:orientation="vertical">
+
             <Button
                 android:id="@+id/buttonlogin"
-                style="@style/ebutton_style"
+                android:background="@drawable/ex_button"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_margin="5dp"
+                android:textColor="#FDFDFE"
+                android:textAllCaps="false"
+                android:textSize="18sp"
                 android:text="LOGIN" />
 
             <Button
                 android:id="@+id/buttonsignup"
-                style="@style/ebutton_style"
-                android:text="Sign up"
-                />
-
-            <TextView
-                android:id="@+id/forget_password_textView"
-                android:layout_width="wrap_content"
+                android:background="@drawable/ex_button"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="240dp"
-                android:layout_marginTop="6dp"
-                android:text="Forget Password?"
-                android:clickable="true"
-                android:textColor="@android:color/background_dark" />
+                android:layout_width="match_parent"
+                android:layout_margin="5dp"
+                android:textColor="#FDFDFE"
+                android:textAllCaps="false"
+                android:textSize="18sp"
+                android:text="Sign up"/>
+        </LinearLayout>
+
+            <LinearLayout
+                android:paddingTop="100dp"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            <com.google.android.gms.common.SignInButton
+                android:background="@color/googlered"
+                android:id="@+id/google_signin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+                <com.facebook.login.widget.LoginButton
+                    android:id="@+id/facebook_login_button"
+                    android:layout_width="match_parent"
+                    android:background="#3b5998"
+                    android:textSize="22sp"
+                    android:layout_height="300dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="30dp" />
+            </LinearLayout>
+
+
 
 
 

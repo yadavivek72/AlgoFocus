@@ -1,17 +1,18 @@
 package com.vivek.algofocus;
-
+import android.content.Context;
 import android.content.Intent;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import com.facebook.AccessToken;
 import com.facebook.AccessTokenTracker;
 import com.facebook.CallbackManager;
@@ -19,6 +20,7 @@ import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
+import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -39,7 +41,9 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 public class Login extends AppCompatActivity implements View.OnClickListener{
     private SignInButton signInButton;
@@ -57,13 +61,32 @@ public class Login extends AppCompatActivity implements View.OnClickListener{
     private int RC_SIGN_IN = 1;
     private CallbackManager callbackManager;
     private AccessTokenTracker accessTokenTracker;
+    String Email_sh,Password_sh;
 
+
+    public void onCheckBoxClicked(View view)
+    {
+        boolean checked=((CheckBox) view).isChecked();
+        SharedPreferences sharedPreferences= getSharedPreferences("MyData", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor=sharedPreferences.edit();
+        Email_sh=editTextEmail.getText().toString();
+        Password_sh=editTextEmail.getText().toString();
+        editor.putString("Email",Email_sh);
+        editor.putString("Password",Password_sh);
+        editor.commit();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         mAuth=FirebaseAuth.getInstance();
+        database= FirebaseDatabase.getInstance().getReference();
+        mref=database.child("user");
+        if(Email_sh!=null) {
+            editTextEmail.setText(Email_sh);
+            editTextPassword.setText(Password_sh);
+        }
         FacebookSdk.sdkInitialize(getApplicationContext());
         callbackManager = CallbackManager.Factory.create();
         facebook_Login_button=findViewById(R.id.facebook_login_button);
@@ -97,11 +120,10 @@ public class Login extends AppCompatActivity implements View.OnClickListener{
                 FirebaseUser user=firebaseAuth.getCurrentUser();
                 if(user!=null)
                 {
-                    updatefbUI(user);
+
                 }
                 else
                 {
-                    updatefbUI(null);
                 }
 
             }
@@ -117,8 +139,8 @@ public class Login extends AppCompatActivity implements View.OnClickListener{
             }
         };
 
-        editTextEmail=(EditText)findViewById(R.id.username);
-        editTextPassword=(EditText)findViewById(R.id.password);
+        editTextEmail=findViewById(R.id.username);
+        editTextPassword=findViewById(R.id.password);
         findViewById(R.id.buttonsignup).setOnClickListener(this);
         findViewById(R.id.buttonlogin).setOnClickListener(this);
         findViewById(R.id.google_signin).setOnClickListener(this);
@@ -140,7 +162,6 @@ public class Login extends AppCompatActivity implements View.OnClickListener{
         switch (v.getId()) {
             case R.id.buttonlogin:
                 userLogin();
-                // Toast.makeText(getApplication(),"User successfully login",Toast.LENGTH_SHORT).show();
                 break;
             case R.id.buttonsignup:
                 Intent intent = new Intent(this, SignUp.class);
@@ -174,7 +195,6 @@ public class Login extends AppCompatActivity implements View.OnClickListener{
                 else {
                     // If sign in fails, display a message to the user.
                     //   Log.w(TAG, "signInWithEmail:failure", task.getException());
-                    //        finish();
                     Toast.makeText(getApplication(), "Authentication failed.",
                             Toast.LENGTH_SHORT).show();
                 }
@@ -230,9 +250,6 @@ public class Login extends AppCompatActivity implements View.OnClickListener{
         try{
             GoogleSignInAccount googleSignInAccount= completTask.getResult(ApiException.class);
             Toast.makeText(Login.this,"Signed In Successfully",Toast.LENGTH_SHORT).show();
-            //startActivity(new Intent(Login.this,Home.class));
-            //finish();
-
             firebaseGoogleAuth(googleSignInAccount);
         }
         catch (ApiException e){
@@ -249,8 +266,8 @@ public class Login extends AppCompatActivity implements View.OnClickListener{
                 if(task.isSuccessful())
                 {
                     Toast.makeText(Login.this,"Successfull",Toast.LENGTH_SHORT).show();
-                    FirebaseUser user = mAuth.getCurrentUser();
-                    updateUI(user);
+                    String id =FirebaseAuth.getInstance().getCurrentUser().getUid();
+                    updateUI(id);
 
                 }
                 else
@@ -261,16 +278,37 @@ public class Login extends AppCompatActivity implements View.OnClickListener{
         });
     }
 
-    private void updateUI(FirebaseUser fuser)
+    private void updateUI(String id)
     {
         GoogleSignInAccount acc=GoogleSignIn.getLastSignedInAccount(getApplicationContext());
         if(acc!=null)
         {
-            String personName= acc.getDisplayName();
-            String personEmail=acc.getEmail();
-            Toast.makeText(getApplicationContext(),personName,Toast.LENGTH_SHORT).show();
+
+            Toast.makeText(getApplication(), "id"+id, Toast.LENGTH_SHORT).show();
+            msubref=mref.child(id);
+            msubref.child("Email").setValue(acc.getEmail());
+            msubref.child("Name").setValue(acc.getDisplayName());
+            msubref.child("Contact number").setValue("");
+            if(acc.getPhotoUrl()!=null)
+            {
+                String photoUrl=acc.getPhotoUrl().toString();
+                msubref.child("urlToImage").setValue(photoUrl.trim());
+            }
+            else
+            {
+                msubref.child("urlToImage").setValue("");
+            }
+            googleSignInClient.signOut();
+            startActivity(new Intent(Login.this,Home.class));
+            finish();
+
+        }
+        else {
+            Toast.makeText(getApplication(), "InsideElse of Update UI", Toast.LENGTH_SHORT).show();
         }
     }
+
+
 
     private void handleFacebookToken(AccessToken token)
     {
@@ -282,13 +320,14 @@ public class Login extends AppCompatActivity implements View.OnClickListener{
                 if(task.isSuccessful()){
                     Log.d(TAG1,"signinwith credential: successfull");
                     FirebaseUser user= mAuth.getCurrentUser();
-                    updatefbUI(user);
+                    String id =FirebaseAuth.getInstance().getCurrentUser().getUid();
+                    updatefbUI(user,id);
                 }
                 else
                 {
                     Log.d(TAG1,"signinwith credential: failed",task.getException());
                     Toast.makeText(getApplicationContext(),"Authentication Failed", Toast.LENGTH_SHORT).show();
-                    updatefbUI(null);
+                    updatefbUI(null,null);
 
                 }
             }
@@ -296,12 +335,28 @@ public class Login extends AppCompatActivity implements View.OnClickListener{
 
     }
 
-    private void updatefbUI(FirebaseUser user)
+    private void updatefbUI(FirebaseUser user,String id)
     {
         if(user!=null)
         {
+
             String Name=user.getDisplayName();
-            Toast.makeText(getApplicationContext(),Name, Toast.LENGTH_SHORT).show();
+            msubref=mref.child(id);
+            msubref.child("Email").setValue("");
+            msubref.child("Name").setValue(Name.trim());
+            msubref.child("Contact number").setValue("");
+            if(user.getPhotoUrl()!=null)
+            {
+                String photoUrl=user.getPhotoUrl().toString();
+                msubref.child("urlToImage").setValue(photoUrl.trim());
+            }
+            else
+            {
+                msubref.child("urlToImage").setValue("");
+            }
+            startActivity(new Intent(Login.this,Home.class));
+            finish();
+
         }
     }
     

@@ -34,6 +34,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
+        setTitle("SignUp");
         mAuth = FirebaseAuth.getInstance();
         database= FirebaseDatabase.getInstance().getReference();
         mref=database.child("user");
@@ -68,6 +69,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
                     msubref.child("Email").setValue(Email);
                     msubref.child("Name").setValue(Name);
                     msubref.child("Contact number").setValue(Contact_Number);
+                    msubref.child("urlToImage").setValue("");
                     //startActivity(new Intent(Signup.this , RecruiterMain.class));
                     startActivity(new Intent(SignUp.this,Home.class));
 

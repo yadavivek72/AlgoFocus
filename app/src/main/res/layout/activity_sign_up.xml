@@ -89,12 +89,27 @@
                 android:ems="10"
                 android:drawablePadding="12dp"/>
 
+            <LinearLayout
+                android:paddingTop="120dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingRight="10dp"
+                android:paddingLeft="10dp"
+                android:orientation="vertical">
+
             <Button
                 android:id="@+id/buttonsignup"
-                style="@style/ebutton_style"
+                android:background="@drawable/ex_button"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_margin="5dp"
+                android:textColor="#FDFDFE"
+                android:textAllCaps="false"
+                android:textSize="18sp"
                 android:text="Sign up"
-                android:onClick="onNext"
+
                 />
+            </LinearLayout>
 
         </LinearLayout>
 
